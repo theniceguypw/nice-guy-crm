@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Nice Guy CRM</title>
+  <meta name="theme-color" content="#1565c0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Nice Guy CRM" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Login screen -->
+  <section id="login-view" class="view hidden">
+    <div class="card login-card">
+      <h1>The Nice Guy Washing Services</h1>
+      <p class="muted">Sign in to your sales pipeline</p>
+      <form id="login-form">
+        <label>Email<input id="login-email" type="email" autocomplete="username" required /></label>
+        <label>Password<input id="login-password" type="password" autocomplete="current-password" required /></label>
+        <button type="submit" class="primary block">Sign in</button>
+        <p id="login-error" class="error" hidden></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Main app -->
+  <section id="app-view" class="view hidden">
+    <header class="topbar">
+      <h1>Nice Guy CRM</h1>
+      <div class="topbar-actions">
+        <button id="outlook-btn" class="ghost small">Connect Outlook</button>
+        <button id="signout-btn" class="ghost small">Sign out</button>
+      </div>
+    </header>
+
+    <nav class="segments" role="tablist">
+      <button class="segment active" data-segment="residential" role="tab">Residential</button>
+      <button class="segment" data-segment="commercial" role="tab">Commercial</button>
+    </nav>
+
+    <div class="funnel" id="funnel"></div>
+
+    <main class="content">
+      <div class="list-toolbar">
+        <input id="search" type="search" placeholder="Search name, phone, email, address" />
+        <button id="add-customer-btn" class="primary small">+ Add</button>
+      </div>
+      <ul id="customer-list" class="customer-list"></ul>
+      <p id="empty-state" class="muted center" hidden>No customers here yet.</p>
+    </main>
+  </section>
+
+  <!-- Add / edit customer dialog -->
+  <dialog id="customer-dialog">
+    <form id="customer-form" method="dialog" class="dialog-body">
+      <h2 id="customer-dialog-title">New customer</h2>
+      <div class="row">
+        <label>First name<input name="first_name" required /></label>
+        <label>Last name<input name="last_name" /></label>
+      </div>
+      <label>Phone<input name="phone" type="tel" /></label>
+      <label>Email<input name="email" type="email" /></label>
+      <label>Address<textarea name="address" rows="2"></textarea></label>
+      <label>Type
+        <select name="segment">
+          <option value="residential">Residential</option>
+          <option value="commercial">Commercial</option>
+        </select>
+      </label>
+      <label>Stage
+        <select name="stage" id="stage-select"></select>
+      </label>
+      <div class="dialog-actions">
+        <button type="button" class="ghost" id="customer-cancel">Cancel</button>
+        <button type="submit" class="primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Customer detail dialog: notes and follow-ups -->
+  <dialog id="detail-dialog">
+    <div class="dialog-body" id="detail-body"></div>
+  </dialog>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@3.7.1/lib/msal-browser.min.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js");
+    }
+  </script>
+</body>
+</html>
